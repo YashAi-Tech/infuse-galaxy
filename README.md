@@ -1,5 +1,7 @@
 # Infuse Galaxy Run 🌌🏃‍♂️
 
+![Infuse Galaxy Run Banner](./src/assets/images/galaxy_run_banner_1782921208331.jpg)
+
 A high-speed, fully interactive 3D synthwave runner built with React, Three.js, React Three Fiber, and Tailwind CSS. Swerve through cyber-lanes, collect glowing level-specific keywords, purchase powerful upgrades from the integrated retro shop portal, and dominate the synthwave cosmos!
 
 ---
