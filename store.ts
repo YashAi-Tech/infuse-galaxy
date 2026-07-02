@@ -26,6 +26,12 @@ interface GameState {
   hasImmortality: boolean;
   isImmortalityActive: boolean;
 
+  // Track Powerups
+  isPowerupInvincible: boolean;
+  powerupInvincibleTimeLeft: number;
+  isPowerupSpeedBoost: boolean;
+  powerupSpeedBoostTimeLeft: number;
+
   // Actions
   selectMap: (mapId: string) => void;
   selectSkin: (skinId: string) => void;
@@ -44,6 +50,9 @@ interface GameState {
   openShop: () => void;
   closeShop: () => void;
   activateImmortality: () => void;
+  activatePowerupInvincible: (duration: number) => void;
+  activatePowerupSpeedBoost: (duration: number) => void;
+  tickPowerups: (delta: number) => void;
 }
 
 const MAX_LEVEL = 5;
@@ -65,6 +74,10 @@ export const useStore = create<GameState>((set, get) => ({
   hasDoubleJump: false,
   hasImmortality: false,
   isImmortalityActive: false,
+  isPowerupInvincible: false,
+  powerupInvincibleTimeLeft: 0,
+  isPowerupSpeedBoost: false,
+  powerupSpeedBoostTimeLeft: 0,
 
   selectMap: (mapId: string) => set({ currentMapId: mapId }),
   selectSkin: (skinId: string) => set({ currentSkinId: skinId }),
@@ -85,7 +98,11 @@ export const useStore = create<GameState>((set, get) => ({
       distance: 0,
       hasDoubleJump: false,
       hasImmortality: false,
-      isImmortalityActive: false
+      isImmortalityActive: false,
+      isPowerupInvincible: false,
+      powerupInvincibleTimeLeft: 0,
+      isPowerupSpeedBoost: false,
+      powerupSpeedBoostTimeLeft: 0
     });
   },
 
@@ -105,13 +122,17 @@ export const useStore = create<GameState>((set, get) => ({
       distance: 0,
       hasDoubleJump: false,
       hasImmortality: false,
-      isImmortalityActive: false
+      isImmortalityActive: false,
+      isPowerupInvincible: false,
+      powerupInvincibleTimeLeft: 0,
+      isPowerupSpeedBoost: false,
+      powerupSpeedBoostTimeLeft: 0
     });
   },
 
   takeDamage: () => {
-    const { lives, isImmortalityActive } = get();
-    if (isImmortalityActive) return; // No damage if skill is active
+    const { lives, isImmortalityActive, isPowerupInvincible } = get();
+    if (isImmortalityActive || isPowerupInvincible) return; // No damage if skill or power-up is active
 
     if (lives > 1) {
       set({ lives: lives - 1 });
@@ -223,4 +244,51 @@ export const useStore = create<GameState>((set, get) => ({
 
   setStatus: (status) => set({ status }),
   increaseLevel: () => set((state) => ({ level: state.level + 1 })),
+
+  activatePowerupInvincible: (duration) => set({
+    isPowerupInvincible: true,
+    powerupInvincibleTimeLeft: duration
+  }),
+
+  activatePowerupSpeedBoost: (duration) => set({
+    isPowerupSpeedBoost: true,
+    powerupSpeedBoostTimeLeft: duration
+  }),
+
+  tickPowerups: (delta) => {
+    const { 
+      isPowerupInvincible, 
+      powerupInvincibleTimeLeft, 
+      isPowerupSpeedBoost, 
+      powerupSpeedBoostTimeLeft 
+    } = get();
+
+    let nextInvincible = isPowerupInvincible;
+    let nextInvincibleTime = powerupInvincibleTimeLeft;
+    let nextSpeedBoost = isPowerupSpeedBoost;
+    let nextSpeedBoostTime = powerupSpeedBoostTimeLeft;
+
+    if (isPowerupInvincible) {
+      nextInvincibleTime -= delta;
+      if (nextInvincibleTime <= 0) {
+        nextInvincible = false;
+        nextInvincibleTime = 0;
+      }
+    }
+
+    if (isPowerupSpeedBoost) {
+      nextSpeedBoostTime -= delta;
+      if (nextSpeedBoostTime <= 0) {
+        nextSpeedBoost = false;
+        nextSpeedBoostTime = 0;
+      }
+    }
+
+    set({
+      isPowerupInvincible: nextInvincible,
+      powerupInvincibleTimeLeft: Math.max(0, nextInvincibleTime),
+      isPowerupSpeedBoost: nextSpeedBoost,
+      powerupSpeedBoostTimeLeft: Math.max(0, nextSpeedBoostTime)
+    });
+  }
 }));

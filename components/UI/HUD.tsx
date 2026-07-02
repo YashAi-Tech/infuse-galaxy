@@ -105,7 +105,28 @@ const ShopScreen: React.FC = () => {
 };
 
 export const HUD: React.FC = () => {
-  const { score, lives, maxLives, collectedLetters, status, level, restartGame, startGame, gemsCollected, distance, isImmortalityActive, speed, currentMapId, selectMap, currentSkinId, selectSkin } = useStore();
+  const { 
+    score, 
+    lives, 
+    maxLives, 
+    collectedLetters, 
+    status, 
+    level, 
+    restartGame, 
+    startGame, 
+    gemsCollected, 
+    distance, 
+    isImmortalityActive, 
+    speed, 
+    currentMapId, 
+    selectMap, 
+    currentSkinId, 
+    selectSkin,
+    isPowerupInvincible,
+    powerupInvincibleTimeLeft,
+    isPowerupSpeedBoost,
+    powerupSpeedBoostTimeLeft
+  } = useStore();
   const target = LEVEL_KEYWORDS[(level - 1) % LEVEL_KEYWORDS.length];
 
   // Common container style
@@ -357,12 +378,24 @@ export const HUD: React.FC = () => {
             LEVEL {level} <span className="text-gray-500 text-xs md:text-sm">/ 5</span>
         </div>
 
-        {/* Active Skill Indicator */}
-        {isImmortalityActive && (
-             <div className="absolute top-24 left-1/2 transform -translate-x-1/2 text-yellow-400 font-bold text-xl md:text-2xl animate-pulse flex items-center drop-shadow-[0_0_10px_gold]">
-                 <Shield className="mr-2 fill-yellow-400" /> IMMORTAL
-             </div>
-        )}
+        {/* Active Skill & Powerup Indicators */}
+        <div className="absolute top-24 md:top-32 left-1/2 transform -translate-x-1/2 flex flex-col items-center space-y-2 pointer-events-none z-50">
+            {isImmortalityActive && (
+                 <div className="text-yellow-400 font-bold text-lg md:text-xl animate-pulse flex items-center drop-shadow-[0_0_10px_gold]">
+                     <Shield className="mr-2 fill-yellow-400 w-5 h-5" /> IMMORTAL
+                 </div>
+            )}
+            {isPowerupInvincible && (
+                 <div className="text-cyan-400 font-bold text-lg md:text-xl animate-pulse flex items-center drop-shadow-[0_0_10px_#00ffff]">
+                     <Shield className="mr-2 fill-cyan-400 w-5 h-5" /> SHIELD ACTIVE ({Math.ceil(powerupInvincibleTimeLeft)}s)
+                 </div>
+            )}
+            {isPowerupSpeedBoost && (
+                 <div className="text-yellow-500 font-bold text-lg md:text-xl animate-pulse flex items-center drop-shadow-[0_0_10px_#eab308]">
+                     <Zap className="mr-2 fill-yellow-500 w-5 h-5" /> HYPERDRIVE ({Math.ceil(powerupSpeedBoostTimeLeft)}s)
+                 </div>
+            )}
+        </div>
 
         {/* Galaxy Collection Status - Just below Top Bar */}
         <div className="absolute top-16 md:top-24 left-1/2 transform -translate-x-1/2 flex space-x-2 md:space-x-3">

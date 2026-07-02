@@ -63,6 +63,15 @@ Progression in **Infuse Galaxy Run** is governed by collecting glowing neon lett
 
 ---
 
+## ⚡ Track Power-Ups
+
+In addition to store-purchased upgrades, the cosmic lanes spawn glowing interactive power-ups that players can collect directly from the track:
+
+* 🧡 **Hyperdrive Boost (Glowing Orange Octahedron)**: Instantly enter superluminal speed (+50% speed boost) for 8 seconds. This lets you cover massive distance and scale scores in a fraction of the time, complete with a glowing golden spacesuit transformation.
+* 💙 **Deflector Shield (Glowing Blue Sphere)**: Generates a translucent neon cyber-shield bubble around your astronaut for 8 seconds. While the shield is active, you are completely immune to damage from barricades, missiles, and other alien hazards.
+
+---
+
 ## 🛠️ Controls
 
 * **A / D** or **Left / Right Arrow Keys**: Shift Lanes left/right.

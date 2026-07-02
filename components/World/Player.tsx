@@ -49,7 +49,17 @@ export const Player: React.FC = () => {
   const leftFlameRef = useRef<THREE.Mesh>(null);
   const rightFlameRef = useRef<THREE.Mesh>(null);
 
-  const { status, laneCount, takeDamage, hasDoubleJump, activateImmortality, isImmortalityActive, currentSkinId } = useStore();
+  const { 
+    status, 
+    laneCount, 
+    takeDamage, 
+    hasDoubleJump, 
+    activateImmortality, 
+    isImmortalityActive, 
+    currentSkinId,
+    isPowerupInvincible,
+    isPowerupSpeedBoost
+  } = useStore();
   
   const [lane, setLane] = React.useState(0);
   const targetX = useRef(0);
@@ -72,8 +82,19 @@ export const Player: React.FC = () => {
 
   // Memoized Materials
   const { armorMaterial, jointMaterial, glowMaterial, shadowMaterial } = useMemo(() => {
-      const armorColor = isImmortalityActive ? '#ffd700' : activeSkin.armorColor;
-      const glowColor = isImmortalityActive ? '#ffffff' : activeSkin.glowColor;
+      let armorColor = activeSkin.armorColor;
+      let glowColor = activeSkin.glowColor;
+
+      if (isImmortalityActive) {
+          armorColor = '#ffd700';
+          glowColor = '#ffffff';
+      } else if (isPowerupInvincible) {
+          armorColor = '#00ffff';
+          glowColor = '#00ffff';
+      } else if (isPowerupSpeedBoost) {
+          armorColor = '#ffcc00';
+          glowColor = '#ffaa00';
+      }
       const jointColor = activeSkin.jointColor;
       
       return {
@@ -82,7 +103,7 @@ export const Player: React.FC = () => {
           glowMaterial: new THREE.MeshBasicMaterial({ color: glowColor }),
           shadowMaterial: new THREE.MeshBasicMaterial({ color: '#000000', opacity: 0.3, transparent: true })
       };
-  }, [isImmortalityActive, activeSkin]); // Only recreate if immortality or activeSkin changes
+  }, [isImmortalityActive, isPowerupInvincible, isPowerupSpeedBoost, activeSkin]); // Only recreate if immortality or activeSkin or powerups change
 
   // --- Reset State on Game Start ---
   useEffect(() => {
@@ -266,7 +287,7 @@ export const Player: React.FC = () => {
     }
 
     // Invincibility / Immortality Effect
-    const showFlicker = isInvincible.current || isImmortalityActive;
+    const showFlicker = isInvincible.current || isImmortalityActive || isPowerupInvincible;
     if (showFlicker) {
         if (isInvincible.current) {
              if (Date.now() - lastDamageTime.current > 1500) {
@@ -276,7 +297,7 @@ export const Player: React.FC = () => {
                 groupRef.current.visible = Math.floor(Date.now() / 50) % 2 === 0;
              }
         } 
-        if (isImmortalityActive) {
+        if (isImmortalityActive || isPowerupInvincible) {
             groupRef.current.visible = true; 
         }
     } else {
@@ -287,7 +308,7 @@ export const Player: React.FC = () => {
   // Damage Handler
   useEffect(() => {
      const checkHit = (e: any) => {
-        if (isInvincible.current || isImmortalityActive) return;
+        if (isInvincible.current || isImmortalityActive || isPowerupInvincible) return;
         audio.playDamage(); // Play damage sound
         takeDamage();
         isInvincible.current = true;
@@ -295,10 +316,16 @@ export const Player: React.FC = () => {
      };
      window.addEventListener('player-hit', checkHit);
      return () => window.removeEventListener('player-hit', checkHit);
-  }, [takeDamage, isImmortalityActive]);
+  }, [takeDamage, isImmortalityActive, isPowerupInvincible]);
 
   return (
     <group ref={groupRef} position={[0, 0, 0]}>
+      {isPowerupInvincible && (
+        <mesh position={[0, 1.1, 0]}>
+          <sphereGeometry args={[0.85, 16, 16]} />
+          <meshBasicMaterial color="#00ffff" wireframe transparent opacity={0.25} />
+        </mesh>
+      )}
       <group ref={bodyRef} position={[0, 1.1, 0]}> 
         
         {/* Chest / Torso Core */}

@@ -168,7 +168,11 @@ export const LevelManager: React.FC = () => {
     setDistance,
     openShop,
     level,
-    currentMapId
+    currentMapId,
+    isPowerupSpeedBoost,
+    activatePowerupSpeedBoost,
+    activatePowerupInvincible,
+    tickPowerups
   } = useStore();
   
   const objectsRef = useRef<GameObject[]>([]);
@@ -237,7 +241,13 @@ export const LevelManager: React.FC = () => {
     if (status !== GameStatus.PLAYING) return;
 
     const safeDelta = Math.min(delta, 0.05); 
-    const dist = speed * safeDelta;
+    
+    // Tick active powerup timers
+    tickPowerups(safeDelta);
+
+    // Apply speed boost multiplier if speed boost is active
+    const activeSpeed = isPowerupSpeedBoost ? speed * 1.5 : speed;
+    const dist = activeSpeed * safeDelta;
     
     distanceTraveled.current += dist;
 
@@ -357,6 +367,14 @@ export const LevelManager: React.FC = () => {
                             if (obj.type === ObjectType.LETTER && obj.targetIndex !== undefined) {
                                 collectLetter(obj.targetIndex);
                                 audio.playLetterCollect();
+                            }
+                            if (obj.type === ObjectType.POWERUP_SPEED) {
+                                activatePowerupSpeedBoost(8.0); // 8 seconds speed boost
+                                audio.playPowerupCollect();
+                            }
+                            if (obj.type === ObjectType.POWERUP_SHIELD) {
+                                activatePowerupInvincible(8.0); // 8 seconds invincibility
+                                audio.playPowerupCollect();
                             }
                             
                             window.dispatchEvent(new CustomEvent('particle-burst', { 
@@ -535,16 +553,38 @@ export const LevelManager: React.FC = () => {
                 }
 
             } else {
-                // GROUND GEM SPAWNING
+                // GROUND PICKUP SPAWNING (Gems or Powerups)
                 const lane = getRandomLane(laneCount);
-                keptObjects.push({
-                    id: uuidv4(),
-                    type: ObjectType.GEM,
-                    position: [lane * LANE_WIDTH, 1.2, spawnZ],
-                    active: true,
-                    color: '#00ffff',
-                    points: 50
-                });
+                const r = Math.random();
+                if (r < 0.12) {
+                    // 12% chance for Speed Boost Powerup
+                    keptObjects.push({
+                        id: uuidv4(),
+                        type: ObjectType.POWERUP_SPEED,
+                        position: [lane * LANE_WIDTH, 1.2, spawnZ],
+                        active: true,
+                        color: '#ffaa00'
+                    });
+                } else if (r < 0.24) {
+                    // 12% chance for Invincibility Shield Powerup
+                    keptObjects.push({
+                        id: uuidv4(),
+                        type: ObjectType.POWERUP_SHIELD,
+                        position: [lane * LANE_WIDTH, 1.2, spawnZ],
+                        active: true,
+                        color: '#00ccff'
+                    });
+                } else {
+                    // Standard Gem
+                    keptObjects.push({
+                        id: uuidv4(),
+                        type: ObjectType.GEM,
+                        position: [lane * LANE_WIDTH, 1.2, spawnZ],
+                        active: true,
+                        color: '#00ffff',
+                        points: 50
+                    });
+                }
             }
             hasChanges = true;
          }
@@ -612,7 +652,7 @@ const GameEntity: React.FC<{ data: GameObject }> = React.memo(({ data }) => {
     // Select Shadow Geometry based on type (using shared geometries)
     const shadowGeo = useMemo(() => {
         if (data.type === ObjectType.LETTER) return SHADOW_LETTER_GEO;
-        if (data.type === ObjectType.GEM) return SHADOW_GEM_GEO;
+        if (data.type === ObjectType.GEM || data.type === ObjectType.POWERUP_SPEED || data.type === ObjectType.POWERUP_SHIELD) return SHADOW_GEM_GEO;
         if (data.type === ObjectType.SHOP_PORTAL) return null; // No shadow needed or custom handled
         if (data.type === ObjectType.ALIEN) return SHADOW_ALIEN_GEO;
         if (data.type === ObjectType.MISSILE) return SHADOW_MISSILE_GEO;
@@ -729,6 +769,58 @@ const GameEntity: React.FC<{ data: GameObject }> = React.memo(({ data }) => {
                             emissiveIntensity={2} 
                         />
                     </mesh>
+                )}
+
+                {/* --- POWERUP SPEED --- */}
+                {data.type === ObjectType.POWERUP_SPEED && (
+                    <group>
+                        {/* Core spinning diamond */}
+                        <mesh castShadow>
+                            <octahedronGeometry args={[0.32, 0]} />
+                            <meshStandardMaterial 
+                                color="#ffcc00" 
+                                roughness={0.1} 
+                                metalness={0.9} 
+                                emissive="#ff8800" 
+                                emissiveIntensity={3} 
+                            />
+                        </mesh>
+                        {/* Speed Rings */}
+                        <mesh rotation={[Math.PI / 4, 0, 0]}>
+                            <torusGeometry args={[0.48, 0.04, 8, 24]} />
+                            <meshBasicMaterial color="#ff3300" transparent opacity={0.8} />
+                        </mesh>
+                        <mesh rotation={[-Math.PI / 4, Math.PI / 2, 0]}>
+                            <torusGeometry args={[0.48, 0.04, 8, 24]} />
+                            <meshBasicMaterial color="#ffaa00" transparent opacity={0.6} />
+                        </mesh>
+                    </group>
+                )}
+
+                {/* --- POWERUP SHIELD --- */}
+                {data.type === ObjectType.POWERUP_SHIELD && (
+                    <group>
+                        {/* Core sphere */}
+                        <mesh castShadow>
+                            <icosahedronGeometry args={[0.26, 1]} />
+                            <meshStandardMaterial 
+                                color="#00ffff" 
+                                roughness={0} 
+                                metalness={1} 
+                                emissive="#0088ff" 
+                                emissiveIntensity={3} 
+                            />
+                        </mesh>
+                        {/* Shield Bubble */}
+                        <mesh>
+                            <sphereGeometry args={[0.45, 16, 16]} />
+                            <meshBasicMaterial color="#00aaff" wireframe transparent opacity={0.4} />
+                        </mesh>
+                        <mesh rotation={[Math.PI / 2, 0, 0]}>
+                            <torusGeometry args={[0.55, 0.03, 8, 24]} />
+                            <meshBasicMaterial color="#00ffff" transparent opacity={0.8} />
+                        </mesh>
+                    </group>
                 )}
 
                 {/* --- LETTER --- */}
