@@ -106,7 +106,7 @@ export const Player: React.FC = () => {
 
   // --- Controls (Keyboard & Touch) ---
   const triggerJump = () => {
-    const maxJumps = hasDoubleJump ? 2 : 1;
+    const maxJumps = hasDoubleJump ? 3 : 2;
 
     if (!isJumping.current) {
         // First Jump
@@ -114,12 +114,12 @@ export const Player: React.FC = () => {
         isJumping.current = true;
         jumpsPerformed.current = 1;
         velocityY.current = JUMP_FORCE;
+        spinRotation.current = 0;
     } else if (jumpsPerformed.current < maxJumps) {
-        // Double Jump (Mid-air)
+        // Double or Triple Jump (Mid-air)
         audio.playJump(true);
         jumpsPerformed.current += 1;
         velocityY.current = JUMP_FORCE; // Reset velocity upwards
-        spinRotation.current = 0; // Start flip
     }
   };
 
@@ -201,11 +201,14 @@ export const Player: React.FC = () => {
             if (bodyRef.current) bodyRef.current.rotation.x = 0;
         }
 
-        // Double Jump Flip
-        if (jumpsPerformed.current === 2 && bodyRef.current) {
-             // Rotate 360 degrees quickly
-             spinRotation.current -= delta * 15;
-             if (spinRotation.current < -Math.PI * 2) spinRotation.current = -Math.PI * 2;
+        // Multi-Jump Flip Animation
+        if (jumpsPerformed.current >= 2 && bodyRef.current) {
+             // Rotate quickly per extra jump
+             const targetSpin = -Math.PI * 2 * (jumpsPerformed.current - 1);
+             spinRotation.current -= delta * 18;
+             if (spinRotation.current < targetSpin) {
+                 spinRotation.current = targetSpin;
+             }
              bodyRef.current.rotation.x = spinRotation.current;
         }
     }
