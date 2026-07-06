@@ -89,3 +89,6 @@ In addition to store-purchased upgrades, the cosmic lanes spawn glowing interact
 * **State Management**: Zustand
 * **Styling**: Tailwind CSS
 * **Icons**: Lucide React
+
+
+infuse-galaxy.vercel.app
