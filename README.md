@@ -88,7 +88,7 @@ In addition to store-purchased upgrades, the cosmic lanes spawn glowing interact
 * **Helpers**: React Three Drei (`@react-three/drei`)
 * **State Management**: Zustand
 * **Styling**: Tailwind CSS
-* **Icons**: Lucide React
+  
 
 
 
