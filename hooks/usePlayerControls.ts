@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../store';
 import { GameStatus } from '../types';
-import { audio } from '../../components/System/Audio';
+import { audio } from '../components/System/Audio';
 
 const JUMP_FORCE = 16;
 
