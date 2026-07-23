@@ -1,94 +1,100 @@
-# Infuse Galaxy Run 🌌🏃‍♂️
+﻿<div align="center">
 
-![Infuse Galaxy Run Banner](./src/assets/images/galaxy_run_banner.svg)
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=2,11,20,24,30&height=200&section=header&text=Infuse%20Galaxy%20Run&fontSize=45&fontColor=fff&animation=twinkling&desc=A%20High-Speed%203D%20Synthwave%20Runner&descSize=20&descAlignY=62" width="100%" />
 
-A high-speed, fully interactive 3D synthwave runner built with React, Three.js, React Three Fiber, and Tailwind CSS. Swerve through cyber-lanes, collect glowing level-specific keywords, purchase powerful upgrades from the integrated retro shop portal, and dominate the synthwave cosmos!
+![Stars](https://img.shields.io/github/stars/YashAi-Tech/infuse-galaxy?style=for-the-badge&color=FFD700)
+![Forks](https://img.shields.io/github/forks/YashAi-Tech/infuse-galaxy?style=for-the-badge&color=00D4FF)
+![License](https://img.shields.io/badge/License-MIT-00FF88?style=for-the-badge)
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=threedotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 
----
+### Swerve through cyber-lanes. Collect neon letters. Dominate the synthwave cosmos!
 
-## 🎮 Game Levels Overview
+[Play Now](#) | [Report Bug](https://github.com/YashAi-Tech/infuse-galaxy/issues) | [Request Feature](https://github.com/YashAi-Tech/infuse-galaxy/issues)
 
-Progression in **Infuse Galaxy Run** is governed by collecting glowing neon letters distributed across the running lanes. Completing a level requires spell-out collection of that level's unique cosmic keyword. Each tier accelerates your base running velocity and intensifies obstacle spawn patterns.
-
-### 🌟 Level 1: NEON
-* **Target Word**: `N` `E` `O` `N` (4 letters)
-* **Aesthetic Vibe**: Mild retro grid with soft purple/magenta ambient lighting.
-* **Speed Profile**: Base speed, serving as an introduction to basic lane switching, obstacle profiles, and single-jump physics.
-* **Challenge Rating**: ⭐ (Beginner)
-* **Strategy**: Use this level to hoard cosmic gems. Focus on learning the exact hitboxes of incoming barricades and practice timed jumps to clear elevated obstacles safely.
-
-### 🪐 Level 2: COSMOS
-* **Target Word**: `C` `O` `S` `M` `O` `S` (6 letters)
-* **Aesthetic Vibe**: Violet star clusters and pulsing cosmic dust lanes.
-* **Speed Profile**: Increased acceleration (+15% speed increase). 
-* **Challenge Rating**: ⭐⭐ (Intermediate)
-* **Strategy**: The letters are placed closer together, sometimes requiring quick diagonal lane-shifts. Keep your eyes further down the lane to anticipate obstacles earlier.
-
-### ☄️ Level 3: GALAXY
-* **Target Word**: `G` `A` `L` `A` `X` `Y` (6 letters)
-* **Aesthetic Vibe**: Vibrant starlight lanes with custom neon-pink and teal galaxy colors.
-* **Speed Profile**: Significant speed boost (+30% velocity from base level). 
-* **Challenge Rating**: ⭐⭐⭐ (Challenging)
-* **Strategy**: At this speed, reaction times are tested. It is highly recommended to visit the Shop prior to starting Level 3 to purchase **Double Jump** and a **Max Lives Upgrade**.
-
-### ⚡ Level 4: HYPER
-* **Target Word**: `H` `Y` `P` `E` `R` (5 letters)
-* **Aesthetic Vibe**: High-energy hyper-drive space with pulsing orange and gold solar winds.
-* **Speed Profile**: +50% speed increase. Standard obstacle collision becomes extremely punishing due to compressed response windows.
-* **Challenge Rating**: ⭐⭐⭐⭐ (Expert)
-* **Strategy**: Use the **Double Jump** to hover longer in mid-air, effectively bypassing crowded lane configurations. Collect letters only when there's a clear trajectory.
-
-### 🌌 Level 5: INFINITY
-* **Target Word**: `I` `N` `F` `I` `N` `I` `T` `Y` (8 letters)
-* **Aesthetic Vibe**: Pristine void-black space punctuated by high-voltage cyan, magenta, and gold particles.
-* **Speed Profile**: Maximum hyper-drive speed (+75% speed increase).
-* **Challenge Rating**: ⭐⭐⭐⭐⭐ (Master)
-* **Strategy**: The ultimate test of endurance. Utilize **Instant Immortality** (press `S` on desktop) to protect yourself during dense obstacle corridors. Plan your power-up activations wisely!
+</div>
 
 ---
 
-## 🚀 Key Features
+## Game Overview
 
-* **Advanced 3D Astronaut Runner**: Control a meticulously structured 3D spacesuit character equipped with animated twin jetpack thruster flames, protective pauldrons, glowing chest emblems, helmet visors, and realistic jointed limb movements.
-* **Coordinate Maps (Dynamic Environments)**: Choose from 4 highly stylized environments:
-  * **Andromeda Path**: Classic violet and pink cosmic cruising.
-  * **Neon Tokyo Grid**: Accelerated cyan neon metropolis cruise (+25% Speed).
-  * **Solar Flare Orbit**: Intense red/orange debris field near a dying star (+35% Obstacles).
-  * **Void Abyss Sector**: Pristine gold-on-black monochromatic hyper-horizon.
-* **Custom Spacesuit Presets**: Toggle between four distinctive suit skins (**Cyber Cyan**, **Nova Pink**, **Void Gold**, **Plasma Mint**), altering armor materials, joint metals, and glow accents in real-time from the dashboard.
-* **Real-time Retro Shop**: Acquire custom power-ups using collected cosmic gems:
-  * **Triple Jump Upgrade**: Unlock capability to perform up to 3 consecutive mid-air jumps (Double Jump is available by default!).
-  * **Max Lives Upgrade**: Increase total survival capability.
-  * **Instant Immortality**: Trigger an invincibility field at will.
+**Infuse Galaxy Run** is a high-speed, fully interactive 3D synthwave runner built with modern web technologies. Race through procedurally generated cyber-lanes, dodge neon obstacles, collect glowing letters, and unlock powerful upgrades from the retro shop portal!
 
----
+### Level Progression
 
-## ⚡ Track Power-Ups
-
-In addition to store-purchased upgrades, the cosmic lanes spawn glowing interactive power-ups that players can collect directly from the track:
-
-* 🧡 **Hyperdrive Boost (Glowing Orange Octahedron)**: Instantly enter superluminal speed (+50% speed boost) for 8 seconds. This lets you cover massive distance and scale scores in a fraction of the time, complete with a glowing golden spacesuit transformation.
-* 💙 **Deflector Shield (Glowing Blue Sphere)**: Generates a translucent neon cyber-shield bubble around your astronaut for 8 seconds. While the shield is active, you are completely immune to damage from barricades, missiles, and other alien hazards.
+| Level | Keyword | Difficulty | Aesthetic |
+|-------|---------|------------|-----------|
+| Level 1 | N-E-O-N | Beginner | Mild retro purple/magenta |
+| Level 2 | C-O-S-M-O-S | Easy | Deep blue cosmic theme |
+| Level 3 | G-A-L-A-X-Y | Medium | Full galaxy panorama |
+| Level 4 | I-N-F-U-S-E-D | Hard | High-speed neon chaos |
+| Level 5 | S-Y-N-T-H-W-A-V-E | Expert | Maximum overdrive |
 
 ---
 
-## 🛠️ Controls
+## Features
 
-* **A / D** or **Left / Right Arrow Keys**: Shift Lanes left/right.
-* **W** or **Up Arrow Key / Spacebar**: Jump (Double Jump by default! Triple Jump if upgrade purchased!).
-* **S** or **Down Arrow Key**: Activate Immortality power shield (requires purchase).
-* **Mobile Swipe Controls**: Swipe Left/Right to shift lanes, Swipe Up to Jump.
+- 3D Gameplay â€” Built with Three.js and React Three Fiber
+- Synthwave Aesthetics â€” Retro-futuristic neon visuals
+- Upgrade Shop â€” Buy power-ups with cosmic gems
+- Dynamic Soundtrack â€” Adaptive synthwave music
+- Progressive Difficulty â€” Speed ramps up per level
+- Cross-Platform â€” Play on desktop or mobile
+- Leaderboard â€” Compete for the highest score
 
 ---
 
-## 📦 Stack Configuration
+## Quick Start
 
-* **Runtime**: React (v19) + Vite
-* **3D Engine**: Three.js + React Three Fiber (`@react-three/fiber`)
-* **Helpers**: React Three Drei (`@react-three/drei`)
-* **State Management**: Zustand
-* **Styling**: Tailwind CSS
-  
+```bash
+# Clone the repository
+git clone https://github.com/YashAi-Tech/infuse-galaxy.git
 
+# Navigate to the project
+cd infuse-galaxy
 
+# Install dependencies
+npm install
 
+# Start the development server
+npm run dev
+```
+
+Open http://localhost:5173 in your browser and start running!
+
+---
+
+## Tech Stack
+
+| Technology | Purpose |
+|-----------|---------|
+| React | UI framework |
+| Three.js | 3D rendering engine |
+| TypeScript | Type-safe development |
+| TailwindCSS | Utility-first styling |
+| Vite | Lightning-fast build tool |
+
+---
+
+## Contributing
+
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## License
+
+MIT License â€” See [LICENSE](LICENSE) for details.
+
+## Author
+
+**Yash Tonde** â€” [@YashAi-Tech](https://github.com/YashAi-Tech)
+
+---
+
+<div align="center">
+
+Star this repo if you enjoy the game!
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=2,11,20,24,30&height=100&section=footer" width="100%" />
+
+</div>
